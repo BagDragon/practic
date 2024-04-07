@@ -22,6 +22,12 @@ namespace WpfApp1
         public Crazy()
         {
             InitializeComponent();
+            AppDbContext context = new AppDbContext();
+            List<User> users = context.Users.ToList();
+
+            Loginlist.ItemsSource = users;
         }
+
+        
     }
 }

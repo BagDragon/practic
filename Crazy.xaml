@@ -8,7 +8,7 @@
         Title="Crazy" Height="450" Width="800">
     <Grid Background="Purple">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
+            
             <ColumnDefinition></ColumnDefinition>
 
         </Grid.ColumnDefinitions>
@@ -17,6 +17,16 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Name="HelloUser" Text="Здравствствуйте, " FontSize="30"></TextBlock>
+       
+        <ListView Name="Loginlist" FontSize="20" Grid.Row="1" Background="Transparent">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel>
+                        <TextBlock Text="Здравствуйте, " FontWeight="Bold"></TextBlock>
+                        <TextBlock Text="{Binding Login}" FontWeight="Bold"></TextBlock>
+                    </WrapPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Window>
