@@ -10,9 +10,15 @@
     <Compile Update="AvtorizZ.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Crazy.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="AvtorizZ.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Crazy.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">

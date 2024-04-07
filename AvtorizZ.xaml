@@ -5,8 +5,57 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="AvtorizZ" Height="450" Width="800">
-    
+        Height="450" Width="800">
+
+    <Window.Resources>
+
+        <!-- Text box with Place Holder -->
+        <Style x:Key="TextBoxWithPlaceHolder" TargetType="{x:Type TextBox}">
+            <Setter Property="Text" Value="" />
+            <Setter Property="ToolTip" Value="" />
+            <Setter Property="Template">
+
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border BorderBrush="Green" BorderThickness="1">
+                            <Grid>
+
+                                <TextBox x:Name="textBox1"
+                                       Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                       VerticalAlignment="Center"
+                                       BorderThickness="0"
+                                       >
+                                </TextBox>
+
+                                <TextBlock
+                                       Text="{TemplateBinding ToolTip}"
+                                       Foreground="gray"
+                                       IsHitTestVisible="False"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Left"
+                                       Margin="0 0 0 0">
+
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text, ElementName=textBox1}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+
+            </Setter>
+        </Style>
+    </Window.Resources>
+
     <Grid Background="Purple">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"></ColumnDefinition>
@@ -20,22 +69,24 @@
         </Grid.RowDefinitions>
 
         <Image Source="img/people.png" Width="50" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1"></Image>
-        <TextBox FontSize="30" Height="50" Width="300" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="Loginbox"></TextBox>
+        <TextBox  Style="{StaticResource TextBoxWithPlaceHolder}" ToolTip="Login" FontSize="30" Height="50" Width="310" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="Loginbox"/>
+
 
         <Image Source="img/lock.png" Width="60" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="2"></Image>
-       
-            
-        <PasswordBox FontSize="30" Height="50" Width="300" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Left" x:Name="Passwordbox"></PasswordBox>
 
-        <Button x:Name="EyeBtn" Click="EyeBtn_Click" Background="Transparent" Height="50" Width="70" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Transparent" Margin="0 0 120 0">
-         
-                    <Image x:Name="eyeImage" Source="img/eyeOpen.png"/>
-        </Button>
+        <PasswordBox FontSize="30" Height="50" Width="300" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Left" x:Name="Passwordbox"/>
+
+        <TextBox x:Name="_visible"
+         Visibility="Collapsed"
+         TextChanged="_visible_TextChanged" FontSize="30" Height="50" Width="300" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Left" />
         
-        
+        <CheckBox Click="_isVisible_Click" x:Name="_isVisible" Background="Transparent" Height="50" Width="70" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Transparent" Margin="0 0 120 0">
+            <Image HorizontalAlignment="Center" x:Name="eyeImage" Source="img/eyeOpen.png" Width="50"/>
+        </CheckBox>
+
         <Button Content="Не зарегистрированы? Зарегистрироваться" Name="TextReg" Width="350" Height="20" Grid.ColumnSpan="2" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 30 0 0" Background="Transparent" BorderBrush="Transparent" FontSize="16" FontFamily="Bold" Click="TextReg_Click"></Button>
 
         <Button Content="Войти" Name="Reg" Width="250" Height="50" Grid.ColumnSpan="2" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 10" Background="Green" FontSize="25" FontFamily="Bold" Click="Reg_Click"></Button>
     </Grid>
-    
+
 </Window>

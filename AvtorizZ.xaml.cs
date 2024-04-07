@@ -17,6 +17,7 @@ using System.Security;
 
 namespace WpfApp1
 {
+    
     //SecureString secureString = new SecureString();
     /// <summary>
     /// Логика взаимодействия для AvtorizZ.xaml
@@ -27,7 +28,7 @@ namespace WpfApp1
         {
             InitializeComponent();
         }
-
+        
         private void TextReg_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = new MainWindow();
@@ -49,12 +50,73 @@ namespace WpfApp1
             var context = new AppDbContext();
             var user = new User { Login = login,Email= email, Password = pass };
             MessageBox.Show("Вы успешно зашли в аккаунт");
+            
+            Crazy crazy = new Crazy();
+            crazy.Show();
+            this.Close();
         }
 
-        private void EyeBtn_Click(object sender, RoutedEventArgs e)
-        {
+        private bool _suspendChangeHandlers = false;
 
-            Passwordbox.IsPasswordRevealed = !Passwordbox.IsPasswordRevealed;
+        #region string Password dependency property
+        public static DependencyProperty PasswordProperty = DependencyProperty.Register(
+            "Password",
+            typeof(string),
+            typeof(WpfApp1.AvtorizZ),
+            new FrameworkPropertyMetadata(
+                (string)null,
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                (obj, args) =>
+                {
+                    ((WpfApp1.AvtorizZ)obj).OnPasswordChanged(args);
+                }));
+        public string Password
+        {
+            get
+            {
+                return (string)GetValue(PasswordProperty);
+            }
+            set
+            {
+                SetValue(PasswordProperty, value);
+            }
+        }
+        private void OnPasswordChanged(DependencyPropertyChangedEventArgs args)
+        {
+            if (_suspendChangeHandlers)
+                return;
+            _suspendChangeHandlers = true;
+            this._visible.Text = args.NewValue as string;
+            this.Passwordbox.Password = args.NewValue as string;
+            _suspendChangeHandlers = false;
+        }
+
+
+
+        #endregion
+
+        private void _isVisible_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isVisible.IsChecked == true)
+            {
+                this.Passwordbox.Visibility = Visibility.Collapsed;
+                this._visible.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                this.Passwordbox.Visibility = Visibility.Visible;
+                this._visible.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void _visible_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_suspendChangeHandlers)
+                return;
+            _suspendChangeHandlers = true;
+            this.SetCurrentValue(PasswordProperty, _visible.Text);
+            this.Passwordbox.Password = _visible.Text;
+            _suspendChangeHandlers = false;
         }
     }
 }
